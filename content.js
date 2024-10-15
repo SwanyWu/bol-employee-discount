@@ -1,30 +1,27 @@
-// Global variables for the default discount rate and tax rate
-let defaultDiscountRate = 0.125;  // 12.5% discount for non-books
-let defaultTaxRate = 0.21;  // 21% tax for non-books
+let defaultDiscountRate = 0.125;
+let defaultTaxRate = 0.21;
 
 // Special rates for books
-let bookDiscountRate = 0.20;  // 20% discount for books
-let bookTaxRate = 0.09;  // 9% tax for books
+let bookDiscountRate = 0.20;
+let bookTaxRate = 0.09;
+
+// Special rates for entertainments and toy
+let playDiscountRate = 0.20;
 
 // Function to calculate discounted price with tax
 function calculateDiscountedPriceWithTax(originalPrice, discountRate, taxRate) {
-    // Step 1: Remove the tax to get the price without tax
     let priceWithoutTax = originalPrice / (1 + taxRate);
     
-    // Step 2: Calculate the original tax directly
     let originalTax = originalPrice - priceWithoutTax;
     
-    // Step 3: Apply the discount on the price without tax
     let discountedPriceWithoutTax = priceWithoutTax * (1 - discountRate);
     
-    // Step 4: Add the original tax back to the discounted price without tax
     let discountedPriceWithTax = discountedPriceWithoutTax + originalTax;
     
-    // Return the final discounted price, including tax
-    return discountedPriceWithTax.toFixed(2);  // Round to 2 decimal places
+    return discountedPriceWithTax.toFixed(2);
 }
 
-// Function to check if the product is a book
+
 function isBookCategory() {
     // Look for the <p> tag with data-test="breadcrumb-name" and check if it contains "Books"
     let breadcrumbElement = document.querySelector('p[data-test="breadcrumb-name"]');
@@ -34,6 +31,25 @@ function isBookCategory() {
     }
     return false;
 }
+
+function isPlayCategory() {
+    // Select all <p> elements with data-test="breadcrumb-name"
+    let breadcrumbElements = document.querySelectorAll('p[data-test="breadcrumb-name"]');
+    
+    if (breadcrumbElements.length > 0) {
+        let playCategories = ['movies & series', 'games', 'music'];
+
+        for (let breadcrumbElement of breadcrumbElements) {
+            let categoryText = breadcrumbElement.textContent.trim().toLowerCase();
+            if (playCategories.some(category => categoryText.includes(category))) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 
 // Select the price element in the HTML
 let priceElement = document.querySelector('span[data-test="price"]');
@@ -56,13 +72,18 @@ let originalPrice = integerPart + (fractionalPart / 100);
 let discountRate = defaultDiscountRate;
 let taxRate = defaultTaxRate;
 
+// 0.8165p
 if (isBookCategory()) {
-    // If the product is a book, apply the special rates
     discountRate = bookDiscountRate;
     taxRate = bookTaxRate;
 }
+// 0.8347p
+if (isPlayCategory()) {
+    discountRate = bookDiscountRate; // 20% off
+    taxRate = defaultTaxRate; // 21% rate
+}
 
-// Calculate the discounted price including tax
+// 0.8967p
 let discountedPrice = calculateDiscountedPriceWithTax(originalPrice, discountRate, taxRate);
 
 // Create a new span element to display the discounted price
