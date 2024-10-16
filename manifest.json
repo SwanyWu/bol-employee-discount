@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Discount Price Calculator",
+    "version": "1.0",
+    "description": "Displays employee price next to the original price.",
+    "permissions": ["activeTab"],
+    "content_scripts": [
+      {
+        "matches": ["*://www.bol.com/nl/p/*"],
+        "js": ["content.js"]
+      }
+    ],
+    "icons": {
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  }
+  
