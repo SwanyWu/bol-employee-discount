@@ -3,10 +3,10 @@
     "name": "Discount Price Calculator",
     "version": "1.0",
     "description": "Displays employee price next to the original price.",
-    "permissions": ["activeTab"],
+    "permissions": ["activeTab", "tabs"],
     "content_scripts": [
       {
-        "matches": ["*://www.bol.com/nl/p/*"],
+        "matches": ["*://www.bol.com/nl/nl/p/*", "*://www.bol.com/nl/nl/p/*?*"],
         "js": ["content.js"]
       }
     ],
